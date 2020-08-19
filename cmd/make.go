@@ -12,7 +12,7 @@ var makeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		for _, arg := range args {
-			if _, err := os.Stat(arg); os.IsExist(err) {
+			if _, err := os.Stat(arg); err == nil {
 				fmt.Println("File already exists")
 			} else {
 				f, err := os.Create(arg)
