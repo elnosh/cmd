@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
-	log "github.com/sirupsen/logrus"
 )
 
 var file string
 var directory string
 
-var createCmd = &cobra.Command{
+var makeCmd = &cobra.Command{
 	Use: "mk",
 	Short: "Make a new file or directory",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -18,7 +17,7 @@ var createCmd = &cobra.Command{
 		if file != "" {
 			f, err := os.Create(file)
 			if err != nil {
-				log.Error("There was an error creating file.")
+				fmt.Println("There was an error creating file.")
 			}
 			defer f.Close()
 		}
@@ -26,7 +25,7 @@ var createCmd = &cobra.Command{
 		if directory != "" {
 			err := os.Mkdir(directory, 0755)
 			if err != nil {
-				log.Error("There was an error creating the directory")
+				fmt.Println("There was an error creating the directory")
 			}
 		}
 
@@ -37,9 +36,9 @@ var createCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(createCmd)
+	rootCmd.AddCommand(makeCmd)
 
-	createCmd.Flags().StringVarP(&file, "file", "f", "", "set file name")
-	createCmd.Flags().StringVarP(&directory, "directory", "d", "", "set directory name")
+	makeCmd.Flags().StringVarP(&file, "file", "f", "", "set file name")
+	makeCmd.Flags().StringVarP(&directory, "directory", "d", "", "set directory name")
 }
 
