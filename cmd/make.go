@@ -28,7 +28,6 @@ var createCmd = &cobra.Command{
 			if err != nil {
 				log.Error("There was an error creating the directory")
 			}
-			//defer os.RemoveAll(directory)
 		}
 
 		//fmt.Println("create: " + strings.Join(args, " "))
