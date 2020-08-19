@@ -9,7 +9,6 @@ import (
 
 var directoryName string
 
-// removeCmd represents the remove command
 var removeCmd = &cobra.Command{
 	Use:   "rmv",
 	Short: "Remove file or directory",
