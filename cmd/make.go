@@ -3,33 +3,25 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 )
-
-var fileFlag *bool
-var dirFlag *bool
 
 var makeCmd = &cobra.Command{
 	Use: "mk",
 	Short: "Make a new file",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Println(args)
-
-		//if file != "" {
-		//	f, err := os.Create(file)
-		//	if err != nil {
-		//		fmt.Println("There was an error creating file.")
-		//	}
-		//	defer f.Close()
-		//}
-		//
-		//if directory != "" {
-		//	err := os.Mkdir(directory, 0755)
-		//	if err != nil {
-		//		fmt.Println("There was an error creating the directory")
-		//	}
-		//}
-		//
+		for _, arg := range args {
+			if _, err := os.Stat(arg); os.IsExist(err) {
+				fmt.Println("File already exists")
+			} else {
+				f, err := os.Create(arg)
+				if err != nil {
+					fmt.Println("There was an error creating the file")
+				}
+				defer f.Close()
+			}
+		}
 	},
 }
 
