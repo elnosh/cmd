@@ -18,8 +18,11 @@ var removeCmd = &cobra.Command{
 		arg := fmt.Sprint(strings.Join(args, " "))
 		if _, err := os.Stat(arg); os.IsNotExist(err) {
 			fmt.Println("file or directory does not exist")
-		} else {
-			fmt.Println(arg)
+			return
+		}
+		err := os.Remove(arg)
+		if err != nil {
+			fmt.Println("There was an error deleting the file")
 		}
 	},
 }
