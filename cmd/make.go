@@ -11,6 +11,8 @@ var makeCmd = &cobra.Command{
 	Short: "Make a new file",
 	Run: func(cmd *cobra.Command, args []string) {
 
+		// TODO: check if args is empty
+
 		for _, arg := range args {
 			if _, err := os.Stat(arg); err == nil {
 				fmt.Println("File already exists")

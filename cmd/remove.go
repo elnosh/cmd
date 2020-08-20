@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
-	"strings"
 )
 
-var directoryName string
+var rmvAll *bool
 
 var removeCmd = &cobra.Command{
 	Use:   "rmv",
@@ -15,20 +14,30 @@ var removeCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if directoryName != "" {
-			os.RemoveAll(directoryName)
-			return
-		}
+		// TODO: check if args is empty
 
-		arg := fmt.Sprint(strings.Join(args, " "))
-
-		if _, err := os.Stat(arg); os.IsNotExist(err) {
-			fmt.Println("file or directory does not exist")
-			return
-		}
-		err := os.Remove(arg)
-		if err != nil {
-			fmt.Println("There was an error deleting the file or directory")
+		if *rmvAll {
+			for _, arg := range args {
+				if _, err := os.Stat(arg); os.IsNotExist(err) {
+					fmt.Println("File or directory does not exist.")
+				} else {
+					err := os.RemoveAll(arg)
+					if err != nil {
+						fmt.Println("There was an error deleting the file or directory")
+					}
+				}
+			}
+		} else {
+			for _, arg := range args {
+				if _, err := os.Stat(arg); os.IsNotExist(err) {
+					fmt.Println("File or directory does not exist")
+				} else {
+					err := os.Remove(arg)
+					if err != nil {
+						fmt.Println("There was an error deleting the file or directory")
+					}
+				}
+			}
 		}
 	},
 }
@@ -36,6 +45,6 @@ var removeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(removeCmd)
-
-	removeCmd.Flags().StringVarP(&directoryName, "all", "a", "", "remove directory and its content")
+	rmvAll = removeCmd.Flags().BoolP("all", "a", false, "remove directory with its content")
 }
+
