@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"io/ioutil"
 	"os"
 )
 
@@ -13,13 +14,16 @@ var removeCmd = &cobra.Command{
 	Short: "Remove file or directory",
 
 	Run: func(cmd *cobra.Command, args []string) {
+		
+		if len(args) == 0 {
+			fmt.Println("  specify file or directory name")
+		}
 
-		// TODO: check if args is empty
-
+		// remove directory along with content if specified in flag
 		if *rmvAll {
 			for _, arg := range args {
 				if _, err := os.Stat(arg); os.IsNotExist(err) {
-					fmt.Println("File or directory does not exist.")
+					fmt.Println(err)
 				} else {
 					err := os.RemoveAll(arg)
 					if err != nil {
@@ -29,8 +33,19 @@ var removeCmd = &cobra.Command{
 			}
 		} else {
 			for _, arg := range args {
+				// read directory specified to check if its empty
+				files, err := ioutil.ReadDir(arg)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				// if directory is not empty. Use flag -a or --all to delete directory along with content.
+				if len(files) > 0 {
+					fmt.Println("rmv:   Use -a to delete directory along with its content.")
+					return
+				}
 				if _, err := os.Stat(arg); os.IsNotExist(err) {
-					fmt.Println("File or directory does not exist")
+					fmt.Println(err)
 				} else {
 					err := os.Remove(arg)
 					if err != nil {

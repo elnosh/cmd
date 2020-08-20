@@ -14,7 +14,7 @@ var mkdirCmd = &cobra.Command{
 
 		for _, arg := range args {
 			if _, err := os.Stat(arg); !os.IsNotExist(err) {
-				fmt.Println("File or directory already exists.")
+				fmt.Println("file or directory already exists.")
 			} else {
 				err := os.Mkdir(arg, 0755)
 				if err != nil {
