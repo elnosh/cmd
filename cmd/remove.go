@@ -14,7 +14,7 @@ var removeCmd = &cobra.Command{
 	Short: "Remove file or directory",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		
+
 		if len(args) == 0 {
 			fmt.Println("  specify file or directory name")
 		}
@@ -26,9 +26,7 @@ var removeCmd = &cobra.Command{
 					fmt.Println(err)
 				} else {
 					err := os.RemoveAll(arg)
-					if err != nil {
-						fmt.Println("There was an error deleting the file or directory")
-					}
+					checkErr(err)
 				}
 			}
 		} else {
@@ -48,15 +46,19 @@ var removeCmd = &cobra.Command{
 					fmt.Println(err)
 				} else {
 					err := os.Remove(arg)
-					if err != nil {
-						fmt.Println("There was an error deleting the file or directory")
-					}
+					checkErr(err)
 				}
 			}
 		}
 	},
 }
 
+func checkErr(err error) {
+	if err != nil {
+		fmt.Println("There was an error deleting the file or directory")
+		return
+	}
+}
 
 func init() {
 	rootCmd.AddCommand(removeCmd)

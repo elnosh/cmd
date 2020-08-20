@@ -11,7 +11,9 @@ var makeCmd = &cobra.Command{
 	Short: "Make a new file",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// TODO: check if args is empty
+		if len(args) == 0 {
+			fmt.Println("  specify file or directory name")
+		}
 
 		for _, arg := range args {
 			if _, err := os.Stat(arg); err == nil {
@@ -30,4 +32,3 @@ var makeCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(makeCmd)
 }
-
