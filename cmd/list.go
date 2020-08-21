@@ -28,7 +28,7 @@ func readDir(path string) {
 		fmt.Println("path specified is not a directory")
 	}
 	for _, file := range files {
-		fmt.Print(file.Name(), "      ")
+		fmt.Printf("%s    ", file.Name())
 	}
 	return
 }
